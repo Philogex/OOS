@@ -3,7 +3,7 @@ package bank;
 /**
  * base class for Transactions of any kind
  */
-public class Transaction {
+abstract public class Transaction {
     /**
      * date of transaction
      */
