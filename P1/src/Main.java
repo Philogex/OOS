@@ -13,7 +13,6 @@ public class Main {
         // constructor
         Payment payment1 = new Payment("11/11/1111", 1000., "eine tausent", 0., 0.);
 
-
         // Transfer
         // default constructor Transfer
         Transfer transfer_default = new Transfer();
