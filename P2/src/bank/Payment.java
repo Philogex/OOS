@@ -3,7 +3,7 @@ package bank;
 /**
  * class for Transactions between banks
  */
-public class Payment extends Transaction implements CalculateBill {
+public class Payment extends Transaction {
     /**
      * interest rate for incoming transaction
      */
@@ -119,7 +119,7 @@ public class Payment extends Transaction implements CalculateBill {
      */
     @Override
     public String toString() {
-        return String.format("%s\tAmount: %s\tincoming Interest: %s\toutgoing Interest: %s", super.toString(), this.calculate(), this.get_incomingInterest(), this.get_outgoingInterest());
+        return String.format("%s\tincoming Interest: %s\toutgoing Interest: %s", super.toString(), this.get_incomingInterest(), this.get_outgoingInterest());
     }
 
     /**

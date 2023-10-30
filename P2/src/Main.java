@@ -36,7 +36,7 @@ public class Main {
         // Transfer: amount in negative
         System.out.println("Transfer: amount in negative");
         Transfer transfer2 = new Transfer("11/11/1111", -1000, "eine tausent", "ich", "mir");
-
+        System.out.println(transfer2);
 
         //testing calculate() Payment, outgoingInterest
         Payment payment4 = new Payment("11/11/1111", -1000., "eine tausent", 0., 0.9);

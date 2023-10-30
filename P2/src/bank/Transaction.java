@@ -3,7 +3,7 @@ package bank;
 /**
  * base class for Transactions of any kind
  */
-public abstract class Transaction {
+public abstract class Transaction implements CalculateBill {
     /**
      * date of transaction
      */
@@ -12,7 +12,7 @@ public abstract class Transaction {
     /**
      * amount of transaction
      */
-    protected double amount;
+    private double amount;
 
     /**
      * description of transaction
@@ -107,7 +107,7 @@ public abstract class Transaction {
      */
     @Override
     public String toString() {
-        return String.format("Date: %s\tDescription: %s\t", this.get_date(), this.get_description());
+        return String.format("Amount: %s\t Date: %s\tDescription: %s\t", this.calculate(), this.get_date(), this.get_description());
     }
 
     /**

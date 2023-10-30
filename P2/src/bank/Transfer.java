@@ -3,7 +3,7 @@ package bank;
 /**
  * class for Transactions between two people
  */
-public class Transfer extends Transaction implements CalculateBill{
+public class Transfer extends Transaction {
     /**
      * sender of transaction
      */
@@ -86,11 +86,11 @@ public class Transfer extends Transaction implements CalculateBill{
      */
     @Override
     public void set_amount(double p_amount) {
-        if(this.get_amount() < 0) {
+        if(p_amount < 0) {
             System.out.println("Amount cannot be negative. Inverting value.");
-            this.set_amount(-p_amount);
+            p_amount = -p_amount;
         }
-        this.amount = p_amount;
+        super.set_amount(p_amount);
     }
 
     /**
@@ -116,7 +116,7 @@ public class Transfer extends Transaction implements CalculateBill{
      */
     @Override
     public String toString() {
-        return String.format("%s\tAmount: %s\tSender: %s\tRecipient: %s", super.toString(), this.calculate(), this.get_sender(), this.get_recipient());
+        return String.format("%s\tSender: %s\tRecipient: %s", super.toString(), this.get_sender(), this.get_recipient());
     }
 
     /**
