@@ -1,0 +1,173 @@
+<mxfile host="app.diagrams.net" modified="2023-10-31T19:14:21.858Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="SiFYPteZyY-DXM2isBW1" version="22.0.8" type="device">
+  <diagram name="Page-1" id="Dh2jhWvl6oHzEDWnQJxS">
+    <mxGraphModel dx="1995" dy="2735" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2000" pageHeight="2000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-2" value="Transfer" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="570" y="330" width="280" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-3" value="&lt;div&gt;- sender: String&lt;/div&gt;&lt;div&gt;- recipient: String&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ktT8rN3bhL_3FAGYkIHo-2" vertex="1">
+          <mxGeometry y="26" width="280" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="ktT8rN3bhL_3FAGYkIHo-2" vertex="1">
+          <mxGeometry y="70" width="280" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-5" value="&lt;div&gt;+ Transfer()&lt;/div&gt;&lt;div&gt;+ Transfer(Transfer)&lt;/div&gt;&lt;div&gt;+ Transfer(String, double, String, String, String)&lt;br&gt; &lt;/div&gt;&lt;div&gt;+ getSender(): String&lt;/div&gt;&lt;div&gt;+ getRecipient(): String&lt;/div&gt;&lt;div&gt;+ setSender(String): void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ setRecipient(String): void&lt;/div&gt;&lt;div&gt;+ setAmount(double): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ calculate(): double&lt;/div&gt;&lt;div&gt;+ toString(): String &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ equals(Object): boolean &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ validateTransactionAttributes(): boolean &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ overwriteInterest(double, double): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ktT8rN3bhL_3FAGYkIHo-2" vertex="1">
+          <mxGeometry y="78" width="280" height="202" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-6" value="Payment" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1170" y="350" width="280" height="260" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-7" value="&lt;div&gt;- incomingInterest: double&lt;br&gt;&lt;/div&gt;&lt;div&gt;- outgoingInterest: double&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ktT8rN3bhL_3FAGYkIHo-6" vertex="1">
+          <mxGeometry y="26" width="280" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="ktT8rN3bhL_3FAGYkIHo-6" vertex="1">
+          <mxGeometry y="70" width="280" height="2" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-9" value="&lt;div&gt;+ Payment()&lt;/div&gt;&lt;div&gt;+ Payment(Payment)&lt;/div&gt;&lt;div&gt;+ Payment(String, double, String, double, double)&lt;br&gt; &lt;/div&gt;&lt;div&gt;+ getIncomingInterest(): double&lt;/div&gt;&lt;div&gt;+ getOutgoingInterest(): double&lt;/div&gt;&lt;div&gt;+ setIncomingInterest(double): void&lt;/div&gt;&lt;div&gt;+ setOutgoingInterest(double): void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ calculate(): double&lt;/div&gt;&lt;div&gt;+ toString(): String &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ equals(Object): boolean &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ validateTransactionAttributes(): boolean &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ overwriteInterest(double, double): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ktT8rN3bhL_3FAGYkIHo-6" vertex="1">
+          <mxGeometry y="72" width="280" height="188" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-10" value="&lt;i&gt;Transaction&lt;/i&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="908.44" y="30" width="240" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-11" value="&lt;div&gt;- date: String&lt;/div&gt;&lt;div&gt;# amount: double&lt;/div&gt;&lt;div&gt;- description: String&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ktT8rN3bhL_3FAGYkIHo-10" vertex="1">
+          <mxGeometry y="26" width="240" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-12" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="ktT8rN3bhL_3FAGYkIHo-10" vertex="1">
+          <mxGeometry y="80" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-13" value="&lt;div&gt;+ Transaction()&lt;/div&gt;&lt;div&gt;+ Transaction(Transaction)&lt;/div&gt;&lt;div&gt;+ Transaction(String, double, String)&lt;br&gt; &lt;/div&gt;&lt;div&gt;+ getDate(): String&lt;/div&gt;&lt;div&gt;+ getAmount(): double&lt;/div&gt;&lt;div&gt;+ getDescription(): String&lt;/div&gt;&lt;div&gt;+ setDate(String): void&lt;/div&gt;&lt;div&gt;+ setAmount(double): void&lt;/div&gt;&lt;div&gt;+ setDescription(String): void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ toString(): String &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ equals(Object): boolean &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ validateTransactionAttributes(): boolean&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ &lt;i&gt;overwriteInterest&lt;/i&gt;(double, double): void&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ktT8rN3bhL_3FAGYkIHo-10" vertex="1">
+          <mxGeometry y="88" width="240" height="202" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-15" value="Extends" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="ktT8rN3bhL_3FAGYkIHo-2" target="ktT8rN3bhL_3FAGYkIHo-10" edge="1">
+          <mxGeometry y="20" width="160" relative="1" as="geometry">
+            <mxPoint x="859.9973770491806" y="340" as="sourcePoint" />
+            <mxPoint x="1028.44" y="10" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-16" value="Extends" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="ktT8rN3bhL_3FAGYkIHo-6" target="ktT8rN3bhL_3FAGYkIHo-10" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="1172.44" y="340" as="sourcePoint" />
+            <mxPoint x="1048.44" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-19" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;«interface»&lt;/span&gt;&lt;br&gt;&lt;div&gt;&lt;b&gt;&lt;i&gt;CalculateBill&lt;/i&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" parent="1" vertex="1">
+          <mxGeometry x="640" y="110" width="160" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="ktT8rN3bhL_3FAGYkIHo-20" value="+ calculate(): double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="ktT8rN3bhL_3FAGYkIHo-19" vertex="1">
+          <mxGeometry y="40" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="PXhcQpSRjgH1lCiN2ur_-2" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;entryX=0.004;entryY=0.052;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="ktT8rN3bhL_3FAGYkIHo-19" target="ktT8rN3bhL_3FAGYkIHo-10" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="340" y="550" as="sourcePoint" />
+            <mxPoint x="500" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-10" value="AccountAlreadyExistsException" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="710" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-13" value="&lt;div&gt;+ AccountAlreadyExistsException()&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-10">
+          <mxGeometry y="26" width="270" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-18" value="AccountDoesNotExistException" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="650" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-19" value="+ AccountDoesNotExistException()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-18">
+          <mxGeometry y="26" width="270" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-20" value="TransactionAlreadyExistException" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="650" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-21" value="+ TransactionAlreadyExistException" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-20">
+          <mxGeometry y="26" width="270" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-22" value="TransactionAttributeException" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="770" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-23" value="+ TransactionAttributeException" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-22">
+          <mxGeometry y="26" width="270" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-24" value="TransactionAttributeValidationException" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="710" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-25" value="+ TransactionAttributeValidationException" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-24">
+          <mxGeometry y="26" width="270" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-28" value="TransactionDoesNotExistException" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="450" y="770" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-29" value="+ TransactionDoesNotExistException" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-28">
+          <mxGeometry y="26" width="270" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-30" value="&lt;span style=&quot;font-weight: normal;&quot;&gt;«interface»&lt;/span&gt;&lt;br&gt;&lt;div&gt;&lt;b&gt;&lt;i&gt;Bank&lt;/i&gt;&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;strokeColor=default;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="1070" width="350" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-31" value="&lt;div&gt;+ createAccount(String): void&lt;/div&gt;&lt;div&gt;+ createAccount(String, List&amp;lt;Transaction&amp;gt;): void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ addTransaction(String, Transaction): void&lt;/div&gt;&lt;div&gt;+ removeTransaction(String, Transaction): void&lt;/div&gt;&lt;div&gt;+ containsTransaction(String, Transaction): boolean&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ getAccountBalance(String): double&lt;/div&gt;&lt;div&gt;+ getTransactions(String): List&amp;lt;Transaction&amp;gt;&lt;/div&gt;&lt;div&gt;+ getTransactionsSorted(String, boolean): List&amp;lt;Transaction&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ getTransactionsByType(String, boolean): List&amp;lt;Transaction&amp;gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-30">
+          <mxGeometry y="40" width="350" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-32" value="IncomingTransfer" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="160" y="520" width="320" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-33" value="&lt;div&gt;+ IncomingTransfer(String, double, String, String, String)&lt;/div&gt;&lt;div&gt;+ calculate(): double&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-32">
+          <mxGeometry y="26" width="320" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-34" value="OutgoingTransfer" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="330" width="320" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-35" value="&lt;div&gt;+ OutgoingTransfer(String, double, String, String, String)&lt;/div&gt;&lt;div&gt;+ calculate(): double&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-34">
+          <mxGeometry y="26" width="320" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-36" value="Extends" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;" edge="1" parent="1" source="qYy6cMKk6NpJF_jd0T7S-32" target="ktT8rN3bhL_3FAGYkIHo-2">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="700" y="670" as="sourcePoint" />
+            <mxPoint x="860" y="670" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-37" value="Extends" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;" edge="1" parent="1" source="qYy6cMKk6NpJF_jd0T7S-34" target="ktT8rN3bhL_3FAGYkIHo-2">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="710" y="720" as="sourcePoint" />
+            <mxPoint x="870" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-38" value="PrivateBank" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1220" y="640" width="390" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-39" value="&lt;div&gt;- name: String&lt;/div&gt;&lt;div&gt;- incomingInterest: double&lt;/div&gt;&lt;div&gt;- outgoingInterest: double&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ accountsToTransactions: Map&amp;lt;String, List&amp;lt;Transaction&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-38">
+          <mxGeometry y="26" width="390" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-40" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-38">
+          <mxGeometry y="90" width="390" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-41" value="&lt;div&gt;+ PrivateBank(String, double, double)&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ PrivaetBank(PrivateBank)&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ getName(): String&lt;/div&gt;&lt;div&gt;+ getIncomingInterest(): double&lt;/div&gt;&lt;div&gt;+ getOutgoingInterest(): double&lt;/div&gt;&lt;div&gt;+ setName(String): void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ setIncomingInterest(double): void&lt;/div&gt;&lt;div&gt;+ setOutgoingInterest(double): void&lt;/div&gt;&lt;div&gt;+ toString(): String &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ equals(Object): boolean &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ createAccount(String): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ createAccount(String, List&amp;lt;Transaction&amp;gt;): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ addTransaction(String, Transaction): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ removeTransaction(String, Transaction): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ containsTransaction(String, Transaction): boolean &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ getAccountBalance(String): double &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ getTransactions(String): List&amp;lt;Transaction&amp;gt; &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ getTransactionsSorted(String, boolean): List&amp;lt;Transaction&amp;gt; &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ getTransactionsByType(String, boolean): List&amp;lt;Transaction&amp;gt; &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-38">
+          <mxGeometry y="98" width="390" height="282" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-42" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="qYy6cMKk6NpJF_jd0T7S-38" target="qYy6cMKk6NpJF_jd0T7S-30">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="660" y="720" as="sourcePoint" />
+            <mxPoint x="820" y="720" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-43" value="PrivateBankAlt" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="630" width="390" height="380" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-44" value="&lt;div&gt;- name: String&lt;/div&gt;&lt;div&gt;- incomingInterest: double&lt;/div&gt;&lt;div&gt;- outgoingInterest: double&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ accountsToTransactions: Map&amp;lt;String, List&amp;lt;Transaction&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-43">
+          <mxGeometry y="26" width="390" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-45" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-43">
+          <mxGeometry y="90" width="390" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-46" value="&lt;div&gt;+ PrivateBank(String, double, double)&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ PrivaetBank(PrivateBank)&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ getName(): String&lt;/div&gt;&lt;div&gt;+ getIncomingInterest(): double&lt;/div&gt;&lt;div&gt;+ getOutgoingInterest(): double&lt;/div&gt;&lt;div&gt;+ setName(String): void&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ setIncomingInterest(double): void&lt;/div&gt;&lt;div&gt;+ setOutgoingInterest(double): void&lt;/div&gt;&lt;div&gt;+ toString(): String &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ equals(Object): boolean &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ createAccount(String): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ createAccount(String, List&amp;lt;Transaction&amp;gt;): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ addTransaction(String, Transaction): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ removeTransaction(String, Transaction): void &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ containsTransaction(String, Transaction): boolean &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ getAccountBalance(String): double &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ getTransactions(String): List&amp;lt;Transaction&amp;gt; &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+ getTransactionsSorted(String, boolean): List&amp;lt;Transaction&amp;gt; &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ getTransactionsByType(String, boolean): List&amp;lt;Transaction&amp;gt; &amp;lt;&amp;lt;o&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="qYy6cMKk6NpJF_jd0T7S-43">
+          <mxGeometry y="98" width="390" height="282" as="geometry" />
+        </mxCell>
+        <mxCell id="qYy6cMKk6NpJF_jd0T7S-47" value="" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;" edge="1" parent="1" source="qYy6cMKk6NpJF_jd0T7S-43" target="qYy6cMKk6NpJF_jd0T7S-30">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="875" y="925" as="sourcePoint" />
+            <mxPoint x="730" y="936" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
