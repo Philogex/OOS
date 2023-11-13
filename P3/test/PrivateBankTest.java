@@ -223,6 +223,7 @@ class PrivateBankTest {
         //account with one payment into account, one out of account with equal value, one incoming transfer and one outgoing transfer
         /*
          * TEST CASES DO NOT MATCH ACTUAL RESULTS
+         * incoming and outgoing transfer do not allow this to be negative
          */
         Transaction validTransaction_4 = new Transfer("date", 1000, "", "payment", "b");
         assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction_4));
