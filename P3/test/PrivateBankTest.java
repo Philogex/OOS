@@ -104,7 +104,7 @@ class PrivateBankTest {
         assertThrows(TransactionAlreadyExistException.class, () -> privateBank.createAccount("AAAACEOUNTTTT", transactions));
 
         List<Transaction> transactionsAttribute = new ArrayList<>();
-        Payment invalidPayment = new Payment("", 1, "description", 0.5, 0.5);
+        Payment invalidPayment = new Payment("", 1, "description", 0.6, 0.5);
         transactionsAttribute.add(invalidPayment);
         assertThrows(TransactionAttributeException.class, () -> privateBank.createAccount("AAAACEOUNTTTTTTTTTTTTTT", transactionsAttribute));
     }
