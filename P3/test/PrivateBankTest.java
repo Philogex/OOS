@@ -104,7 +104,7 @@ class PrivateBankTest {
         assertThrows(TransactionAlreadyExistException.class, () -> privateBank.createAccount("AAAACEOUNTTTT", transactions));
 
         List<Transaction> transactionsAttribute = new ArrayList<>();
-        Payment invalidPayment = new Payment("", 1, "description", 0.5, 0.5);
+        Payment invalidPayment = new Payment("", 1, "description", 0.6, 0.5);
         transactionsAttribute.add(invalidPayment);
         assertThrows(TransactionAttributeException.class, () -> privateBank.createAccount("AAAACEOUNTTTTTTTTTTTTTT", transactionsAttribute));
     }
@@ -223,6 +223,7 @@ class PrivateBankTest {
         //account with one payment into account, one out of account with equal value, one incoming transfer and one outgoing transfer
         /*
          * TEST CASES DO NOT MATCH ACTUAL RESULTS
+         * incoming and outgoing transfer do not allow this to be negative
          */
         Transaction validTransaction_4 = new Transfer("date", 1000, "", "payment", "b");
         assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction_4));
