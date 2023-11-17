@@ -4,6 +4,14 @@ package bank;
  * outgoing transfers
  */
 public class OutgoingTransfer extends Transfer {
+
+    /**
+     * default constructor calling base default constructor
+     */
+    public OutgoingTransfer() {
+        super();
+    }
+
     /**
      * constructor for all attributes of object
      * @param p_date date

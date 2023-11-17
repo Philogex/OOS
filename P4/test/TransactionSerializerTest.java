@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TransactionSerializerTest {
     static String dir = "./test_data";
-    
+
     @org.junit.jupiter.api.AfterAll
     public static void cleanup() {
         File directory = new File(dir);
@@ -52,11 +52,11 @@ public class TransactionSerializerTest {
         String comparison = "{" +
                 "\"CLASSNAME\":\"Payment\"," +
                 "\"INSTANCE\":{" +
+                "\"incomingInterest\":0.5," +
+                "\"outgoingInterest\":0.5," +
                 "\"date\":\"01/01/1990\"," +
                 "\"amount\":1000.0," +
-                "\"description\":\"initialization\"," +
-                "\"incomingInterest\":0.5," +
-                "\"outgoingInterest\":0.5" +
+                "\"description\":\"initialization\"" +
                 "}" + "}";
 
         //compare json strings
@@ -99,11 +99,11 @@ public class TransactionSerializerTest {
         String comparison = "{" +
                 "\"CLASSNAME\":\"Payment\"," +
                 "\"INSTANCE\":{" +
+                "\"incomingInterest\":0.5," +
+                "\"outgoingInterest\":0.5," +
                 "\"date\":\"01/01/1990\"," +
                 "\"amount\":1000.0," +
-                "\"description\":\"initialization\"," +
-                "\"incomingInterest\":0.5," +
-                "\"outgoingInterest\":0.5" +
+                "\"description\":\"initialization\"" +
                 "}" + "}";
 
         //compare json strings
@@ -121,7 +121,7 @@ public class TransactionSerializerTest {
     }
 
     /*
-    commented out bc of private class
+    //commented out bc of private class
     @org.junit.jupiter.api.Test
     void testReadWriteAccounts() {
         PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
@@ -133,6 +133,10 @@ public class TransactionSerializerTest {
         assertDoesNotThrow(() -> privateBank.addTransaction(name, validTransaction_1));
         Transaction validTransaction_2 = new Transfer();
         assertDoesNotThrow(() -> privateBank.addTransaction(name, validTransaction_2));
+        Transaction validTransaction_3 = new OutgoingTransfer("01/01/1990", 1500, "AAAAAA", "payment", "a");
+        assertDoesNotThrow(() -> privateBank.addTransaction(name, validTransaction_3));
+        Transaction validTransaction_4 = new IncomingTransfer("01/01/1990", 1500, "AAAAAAAA", "payment", "ab");
+        assertDoesNotThrow(() -> privateBank.addTransaction(name, validTransaction_4));
 
         //write account data
         assertDoesNotThrow(() -> privateBank.writeAccount(name));
@@ -144,5 +148,5 @@ public class TransactionSerializerTest {
         assertDoesNotThrow(privateBank::readAccounts);
         assertEquals(privateBank.accountsToTransactions.get(name).size(), readTransactions.size());
     }
-     */
+    */
 }

@@ -27,9 +27,11 @@ public class TransactionSerializer implements JsonSerializer<Transaction>, JsonD
 
         JsonObject instanceObject = new JsonObject();
 
+        Class<?> objectClass = p_object.getClass();
+
         //I HATE JAVA
-        Field[] fieldsBase = Transaction.class.getDeclaredFields();
-        for (Field field : fieldsBase) {
+        Field[] fieldsDerived = objectClass.getDeclaredFields();
+        for (Field field : fieldsDerived) {
             field.setAccessible(true);
             try {
                 Object value = field.get(p_object);
@@ -40,15 +42,21 @@ public class TransactionSerializer implements JsonSerializer<Transaction>, JsonD
         }
 
         //I HATE JAVA
-        Field[] fieldsDerived = p_object.getClass().getDeclaredFields();
-        for (Field field : fieldsDerived) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(p_object);
-                instanceObject.add(field.getName(), p_context.serialize(value));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+        int inheritanceTree = 2;
+        while(inheritanceTree >= 0) {
+            objectClass = objectClass.getSuperclass();
+            if(objectClass == null) break;
+            Field[] fieldsBase = objectClass.getDeclaredFields();
+            for (Field field : fieldsBase) {
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(p_object);
+                    instanceObject.add(field.getName(), p_context.serialize(value));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
+            inheritanceTree--;
         }
 
         //add INSTANCE as json property
@@ -97,14 +105,28 @@ public class TransactionSerializer implements JsonSerializer<Transaction>, JsonD
                     Object deserializedFieldValue = p_context.deserialize(fieldValue, field.getType());
 
                     field.set(transactionObject, deserializedFieldValue);
-                } catch (NoSuchFieldException e) {
-                    //I HATE JAVA
-                    Field field = transactionClass.getSuperclass().getDeclaredField(fieldName);
-                    field.setAccessible(true);
+                } catch (NoSuchFieldException e1) {
+                    Class<?> transactionSuperClass = transactionClass;
+                    int inheritanceTree = 2;
 
-                    Object deserializedFieldValue = p_context.deserialize(fieldValue, field.getType());
+                    while(inheritanceTree >= 0) {
+                        transactionSuperClass = transactionSuperClass.getSuperclass();
+                        if(transactionSuperClass == null) break;
+                        //I HATE JAVA
+                        try {
+                            Field field = transactionClass.getSuperclass().getDeclaredField(fieldName);
+                            field.setAccessible(true);
 
-                    field.set(transactionObject, deserializedFieldValue);
+                            Object deserializedFieldValue = p_context.deserialize(fieldValue, field.getType());
+
+                            field.set(transactionObject, deserializedFieldValue);
+                        } catch (NoSuchFieldException e2) {
+                            //this is to not trigger NoSuchFieldException
+                        } catch (Exception e3) {
+                            throw new NoSuchFieldException();
+                        }
+                        inheritanceTree--;
+                    }
                 }
             }
 

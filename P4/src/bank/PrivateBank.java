@@ -338,7 +338,7 @@ public class PrivateBank implements Bank {
      * @throws IOException io error...
      */
     private void readAccounts() throws IOException {
-        // Iterate through the accounts and read data from corresponding files
+        //iterate over account data
         for (String account : accountsToTransactions.keySet()) {
             String fileName = "Konto " + account + ".json";
             Path filePath = Paths.get(directoryName, fileName);
@@ -367,7 +367,7 @@ public class PrivateBank implements Bank {
         String fileName = "Konto " + p_account + ".json";
         Path filePath = Paths.get(directoryName, fileName);
 
-        // Create the directory if it doesn't exist
+        //create dir
         Path directoryPath = filePath.getParent();
         Files.createDirectories(directoryPath);
 
@@ -380,7 +380,7 @@ public class PrivateBank implements Bank {
 
             List<Transaction> transactions = accountsToTransactions.get(p_account);
 
-            // Ensure transactions is not null before attempting to serialize
+            //check if transactions exist
             if (transactions != null) {
                 gson.toJson(transactions, writer);
             }
