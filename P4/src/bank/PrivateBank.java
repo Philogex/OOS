@@ -337,7 +337,7 @@ public class PrivateBank implements Bank {
      * reads account data from file to accountsToTransaction attribute
      * @throws IOException io error...
      */
-    public void readAccounts() throws IOException {
+    private void readAccounts() throws IOException {
         // Iterate through the accounts and read data from corresponding files
         for (String account : accountsToTransactions.keySet()) {
             String fileName = "Konto " + account + ".json";
@@ -363,7 +363,7 @@ public class PrivateBank implements Bank {
      * @param p_account account to write to file
      * @throws IOException io error...
      */
-    public void writeAccount(String p_account) throws IOException {
+    private void writeAccount(String p_account) throws IOException {
         String fileName = "Konto " + p_account + ".json";
         Path filePath = Paths.get(directoryName, fileName);
 
