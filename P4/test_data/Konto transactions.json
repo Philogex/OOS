@@ -1,0 +1,32 @@
+[
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "date": "date",
+      "amount": 1.0,
+      "description": "",
+      "incomingInterest": 0.5,
+      "outgoingInterest": 0.5
+    }
+  },
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "date": "date",
+      "amount": 3.0,
+      "description": "",
+      "incomingInterest": 0.5,
+      "outgoingInterest": 0.5
+    }
+  },
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "date": "date",
+      "amount": 2.0,
+      "description": "",
+      "incomingInterest": 0.5,
+      "outgoingInterest": 0.5
+    }
+  }
+]

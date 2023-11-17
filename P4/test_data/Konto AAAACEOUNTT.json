@@ -1,0 +1,22 @@
+[
+  {
+    "CLASSNAME": "Payment",
+    "INSTANCE": {
+      "date": "01/01/1990",
+      "amount": 1000.0,
+      "description": "initialization",
+      "incomingInterest": 0.5,
+      "outgoingInterest": 0.5
+    }
+  },
+  {
+    "CLASSNAME": "Transfer",
+    "INSTANCE": {
+      "date": "01/01/1990",
+      "amount": 1000.0,
+      "description": "initialization",
+      "sender": "initialization_1",
+      "recipient": "initialization_2"
+    }
+  }
+]

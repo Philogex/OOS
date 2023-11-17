@@ -1,0 +1,135 @@
+import com.google.gson.*;
+import bank.*;
+
+import java.nio.file.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class TransactionSerializerTest {
+
+    @org.junit.jupiter.api.AfterAll
+    public static void cleanup() {
+        assertDoesNotThrow(() -> Files.deleteIfExists(Path.of("./test_data")));
+    }
+
+    @org.junit.jupiter.api.Test
+    void testPaymentSerialization() {
+        PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, "./bank_data");
+
+        assertDoesNotThrow(() -> privateBank.createAccount("payment"));
+        Transaction validTransaction = new Payment();
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+
+        //get transactions for account payment
+        List<Transaction> transactions = privateBank.accountsToTransactions.get("payment");
+
+        //check for one transaction
+        assertEquals(1, transactions.size());
+
+        //get first transaction
+        Transaction transaction = transactions.get(0);
+
+        //new gson builder
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Payment.class, new TransactionSerializer());
+        Gson gson = gsonBuilder.create();
+
+        //serialize
+        String json = gson.toJson(transaction);
+
+        String comparison = "{" +
+                "\"CLASSNAME\":\"Payment\"," +
+                "\"INSTANCE\":{" +
+                "\"date\":\"01/01/1990\"," +
+                "\"amount\":1000.0," +
+                "\"description\":\"initialization\"," +
+                "\"incomingInterest\":0.5," +
+                "\"outgoingInterest\":0.5" +
+                "}" + "}";
+
+        //compare json strings
+        assertEquals(comparison, json);
+
+        //get json object
+        JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
+
+        //check CLASSNAME attribute
+        JsonElement classNameElement = jsonObject.get("CLASSNAME");
+        assertNotNull(classNameElement, "CLASSNAME property is missing in the JSON");
+        assertEquals("Payment", classNameElement.getAsString());
+    }
+
+    @org.junit.jupiter.api.Test
+    void testPaymentDeserialization() {
+        PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, "./bank_data");
+
+        assertDoesNotThrow(() -> privateBank.createAccount("payment"));
+        Payment validTransaction = new Payment();
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+
+        //get transactions for account payment
+        List<Transaction> transactions = privateBank.accountsToTransactions.get("payment");
+
+        //check for one transaction
+        assertEquals(1, transactions.size());
+
+        //get first transaction
+        Transaction transaction = transactions.get(0);
+
+        //new gson builder
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Payment.class, new TransactionSerializer());
+        Gson gson = gsonBuilder.create();
+
+        //serialize
+        String json = gson.toJson(transaction);
+
+        String comparison = "{" +
+                "\"CLASSNAME\":\"Payment\"," +
+                "\"INSTANCE\":{" +
+                "\"date\":\"01/01/1990\"," +
+                "\"amount\":1000.0," +
+                "\"description\":\"initialization\"," +
+                "\"incomingInterest\":0.5," +
+                "\"outgoingInterest\":0.5" +
+                "}" + "}";
+
+        //compare json strings
+        assertEquals(comparison, json);
+
+        //deserialize
+        Payment deserializedTransaction = gson.fromJson(json, Payment.class);
+
+        //check attributes
+        assertEquals(0.5, deserializedTransaction.getIncomingInterest());
+        assertEquals(0.5, deserializedTransaction.getOutgoingInterest());
+        assertEquals("01/01/1990", deserializedTransaction.getDate());
+        assertEquals(1000, deserializedTransaction.getAmount());
+        assertEquals("initialization", deserializedTransaction.getDescription());
+    }
+
+    @org.junit.jupiter.api.Test
+    void testReadWriteAccounts() {
+        String dir = "./bank_data";
+        PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
+
+        String name = "payment";
+
+        assertDoesNotThrow(() -> privateBank.createAccount(name));
+        Transaction validTransaction_1 = new Payment();
+        assertDoesNotThrow(() -> privateBank.addTransaction(name, validTransaction_1));
+        Transaction validTransaction_2 = new Transfer();
+        assertDoesNotThrow(() -> privateBank.addTransaction(name, validTransaction_2));
+
+        //write account data
+        assertDoesNotThrow(() -> privateBank.writeAccount(name));
+
+        //check read data
+        assertDoesNotThrow(privateBank::readAccounts);
+        assertTrue(privateBank.accountsToTransactions.containsKey(name));
+        List<Transaction> readTransactions = privateBank.accountsToTransactions.get(name);
+        assertDoesNotThrow(privateBank::readAccounts);
+        assertEquals(privateBank.accountsToTransactions.get(name).size(), readTransactions.size());
+    }
+}
