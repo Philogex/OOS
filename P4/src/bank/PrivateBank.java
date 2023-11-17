@@ -242,8 +242,7 @@ public class PrivateBank implements Bank {
             throw new AccountDoesNotExistException();
         }
 
-        List<Transaction> accountTransactions = accountsToTransactions.get(p_account);
-        if (!accountTransactions.remove(p_transaction)) {
+        if (!accountsToTransactions.get(p_account).remove(p_transaction)) {
             throw new TransactionDoesNotExistException();
         }
 

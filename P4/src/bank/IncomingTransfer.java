@@ -22,6 +22,6 @@ public class IncomingTransfer extends Transfer {
      */
     @Override
     public double calculate() {
-        return +this.getAmount();
+        return +super.calculate();
     }
 }
