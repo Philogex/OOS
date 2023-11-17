@@ -1,4 +1,6 @@
 import bank.*;
+
+import java.io.File;
 import java.util.*;
 import bank.exceptions.*;
 import java.nio.file.*;
@@ -7,15 +9,25 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PrivateBankTest {
     private PrivateBank privateBank;
+    static String dir = "./test_data";
 
     @org.junit.jupiter.api.BeforeEach
     public void setup() {
-        privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, "./test_data");
+        privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
     }
 
     @org.junit.jupiter.api.AfterAll
     public static void cleanup() {
-        
+        File directory = new File(dir);
+        if (directory.exists()) {
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    file.delete();
+                }
+            }
+            directory.delete();
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -53,8 +65,8 @@ class PrivateBankTest {
 
     @org.junit.jupiter.api.Test
     void testEquals() {
-        PrivateBank equalsBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, "./test_data");
-        PrivateBank notEqualsBank = new PrivateBank("WRONG", 0.9, 0.9, "./test_data");
+        PrivateBank equalsBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
+        PrivateBank notEqualsBank = new PrivateBank("WRONG", 0.9, 0.9, dir);
 
         assertEquals(privateBank, equalsBank);
         assertNotEquals(privateBank, notEqualsBank);
@@ -65,7 +77,7 @@ class PrivateBankTest {
         String name = "THEY WONT TAKE ME ALIVE";
         double incomingInterest = 0.1;
         double outgoingInterest = 0.1;
-        PrivateBank constructorBank = new PrivateBank(name, incomingInterest, outgoingInterest, "./test_data");
+        PrivateBank constructorBank = new PrivateBank(name, incomingInterest, outgoingInterest, dir);
         assertEquals(name, constructorBank.getName());
         assertEquals(incomingInterest, constructorBank.getIncomingInterest());
         assertEquals(outgoingInterest, constructorBank.getOutgoingInterest());

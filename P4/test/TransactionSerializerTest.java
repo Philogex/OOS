@@ -1,21 +1,32 @@
 import com.google.gson.*;
 import bank.*;
 
+import java.io.File;
 import java.nio.file.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TransactionSerializerTest {
-
+    static String dir = "./test_data";
+    
     @org.junit.jupiter.api.AfterAll
     public static void cleanup() {
-        assertDoesNotThrow(() -> Files.deleteIfExists(Path.of("./test_data")));
+        File directory = new File(dir);
+        if (directory.exists()) {
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    file.delete();
+                }
+            }
+            directory.delete();
+        }
     }
 
     @org.junit.jupiter.api.Test
     void testPaymentSerialization() {
-        PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, "./bank_data");
+        PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
 
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
         Transaction validTransaction = new Payment();
@@ -62,7 +73,7 @@ public class TransactionSerializerTest {
 
     @org.junit.jupiter.api.Test
     void testPaymentDeserialization() {
-        PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, "./bank_data");
+        PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
 
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
         Payment validTransaction = new Payment();
@@ -111,7 +122,6 @@ public class TransactionSerializerTest {
 
     @org.junit.jupiter.api.Test
     void testReadWriteAccounts() {
-        String dir = "./bank_data";
         PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
 
         String name = "payment";
