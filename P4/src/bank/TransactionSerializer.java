@@ -3,12 +3,27 @@ package bank;
 import com.google.gson.*;
 
 import java.lang.reflect.*;
-import java.util.Map;
+import java.util.*;
 
 /**
- * class for serializing transaction objects
+ * class for serializing any object originating from transaction base class
  */
 public class TransactionSerializer implements JsonSerializer<Transaction>, JsonDeserializer<Transaction> {
+
+    /**
+     * gets all attributes from child and superclasses (applicable to any class)
+     * @param p_objectClass object to gather fields for
+     * @return array of fields populated by object attributes
+     */
+    private Field[] getAllFields(Class<?> p_objectClass) {
+        List<Field> fieldsList = new ArrayList<>();
+        while (p_objectClass != null) {
+            fieldsList.addAll(Arrays.asList(p_objectClass.getDeclaredFields()));
+            p_objectClass = p_objectClass.getSuperclass();
+        }
+        return fieldsList.toArray(new Field[0]);
+    }
+
     /**
      * serializer for transaction objects
      * @param p_object object for serialization
@@ -17,7 +32,7 @@ public class TransactionSerializer implements JsonSerializer<Transaction>, JsonD
      * @return serialized json object
      */
     @Override
-    public JsonElement serialize(Transaction p_object, Type p_type, JsonSerializationContext p_context) {
+    public JsonElement serialize(Transaction p_object, Type p_type, JsonSerializationContext p_context) throws JsonParseException {
         JsonObject jsonObject = new JsonObject();
 
         String className = p_object.getClass().getSimpleName();
@@ -27,11 +42,9 @@ public class TransactionSerializer implements JsonSerializer<Transaction>, JsonD
 
         JsonObject instanceObject = new JsonObject();
 
-        Class<?> objectClass = p_object.getClass();
+        Field[] fields = getAllFields(p_object.getClass());
 
-        //I HATE JAVA
-        Field[] fieldsDerived = objectClass.getDeclaredFields();
-        for (Field field : fieldsDerived) {
+        for (Field field : fields) {
             field.setAccessible(true);
             try {
                 Object value = field.get(p_object);
@@ -41,24 +54,6 @@ public class TransactionSerializer implements JsonSerializer<Transaction>, JsonD
             }
         }
 
-        //I HATE JAVA
-        int inheritanceTree = 2;
-        while(inheritanceTree >= 0) {
-            objectClass = objectClass.getSuperclass();
-            if(objectClass == null) break;
-            Field[] fieldsBase = objectClass.getDeclaredFields();
-            for (Field field : fieldsBase) {
-                field.setAccessible(true);
-                try {
-                    Object value = field.get(p_object);
-                    instanceObject.add(field.getName(), p_context.serialize(value));
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-            inheritanceTree--;
-        }
-
         //add INSTANCE as json property
         jsonObject.add("INSTANCE", instanceObject);
 
@@ -66,7 +61,7 @@ public class TransactionSerializer implements JsonSerializer<Transaction>, JsonD
     }
 
     /**
-     * deserializer for json objects
+     * deserializer for json objects. only works for objects created from classes inside of bank package
      * @param p_json json element for deserialization
      * @param p_type not used (for generics)
      * @param p_context used for multiple json objects
@@ -75,67 +70,51 @@ public class TransactionSerializer implements JsonSerializer<Transaction>, JsonD
      */
     @Override
     public Transaction deserialize(JsonElement p_json, Type p_type, JsonDeserializationContext p_context) throws JsonParseException {
+        //i literally can't imagine anything going wrong with this, unless you manually manipulate the json files
         JsonObject jsonObject = p_json.getAsJsonObject();
 
-        //read CLASSNAME from json property
-        JsonPrimitive classNameElement = jsonObject.getAsJsonPrimitive("CLASSNAME");
+        //read json elements
+        JsonPrimitive classnameElement = jsonObject.getAsJsonPrimitive("CLASSNAME");
         JsonElement instanceElement = jsonObject.get("INSTANCE");
 
-        if (classNameElement == null || instanceElement == null || !instanceElement.isJsonObject()) {
+        if (classnameElement == null || instanceElement == null || !instanceElement.isJsonObject()) {
             throw new JsonParseException("Invalid JSON format");
         }
 
-        String className = classNameElement.getAsString();
+        String classname = classnameElement.getAsString();
+        Object transactionObject = null;
 
         try {
-            Class<?> transactionClass = Class.forName("bank." + className);
+            //get class of object from classname
+            Class<?> transactionClass = Class.forName("bank." + classname);
+            Field[] fields = getAllFields(transactionClass);
 
-            Object transactionObject = transactionClass.getDeclaredConstructor().newInstance();
+            if (instanceElement.isJsonObject()) {
+                //instantiate new transaction object for storage
+                transactionObject = transactionClass.getDeclaredConstructor().newInstance();
 
-            JsonObject instanceObject = instanceElement.getAsJsonObject();
-            for (Map.Entry<String, JsonElement> entry : instanceObject.entrySet()) {
-                String fieldName = entry.getKey();
-                JsonElement fieldValue = entry.getValue();
+                //this is probably redundant, since an correct adapter has to be registered for this function to be used
+                if (!(transactionObject instanceof Transaction)) {
+                    throw new JsonParseException("Unsupported class: " + classname);
+                }
 
-                try {
-                    //I HATE JAVA
-                    Field field = transactionClass.getDeclaredField(fieldName);
-                    field.setAccessible(true);
+                JsonObject instanceObject = instanceElement.getAsJsonObject();
 
-                    Object deserializedFieldValue = p_context.deserialize(fieldValue, field.getType());
+                //write to attributes
+                for (Field field : fields) {
+                    String fieldName = field.getName();
+                    JsonElement fieldValue = instanceObject.get(fieldName);
 
-                    field.set(transactionObject, deserializedFieldValue);
-                } catch (NoSuchFieldException e1) {
-                    Class<?> transactionSuperClass = transactionClass;
-                    int inheritanceTree = 2;
-
-                    while(inheritanceTree >= 0) {
-                        transactionSuperClass = transactionSuperClass.getSuperclass();
-                        if(transactionSuperClass == null) break;
-                        //I HATE JAVA
-                        try {
-                            Field field = transactionClass.getSuperclass().getDeclaredField(fieldName);
-                            field.setAccessible(true);
-
-                            Object deserializedFieldValue = p_context.deserialize(fieldValue, field.getType());
-
-                            field.set(transactionObject, deserializedFieldValue);
-                        } catch (NoSuchFieldException e2) {
-                            //this is to not trigger NoSuchFieldException
-                        } catch (Exception e3) {
-                            throw new NoSuchFieldException();
-                        }
-                        inheritanceTree--;
+                    if (fieldValue != null) {
+                        field.setAccessible(true);
+                        Object deserializedFieldValue = p_context.deserialize(fieldValue, field.getType());
+                        field.set(transactionObject, deserializedFieldValue);
                     }
                 }
             }
 
-            if (transactionObject instanceof Transaction) {
-                return (Transaction) transactionObject;
-            } else {
-                throw new JsonParseException("Unsupported class: " + className);
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | NoSuchFieldException e) {
+            return (Transaction) transactionObject;
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             throw new JsonParseException(e);
         }
     }

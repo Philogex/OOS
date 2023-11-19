@@ -41,7 +41,7 @@ public class TransactionSerializerTest {
         //get first transaction
         Transaction transaction = transactions.get(0);
 
-        //new gson builder
+        //new gson builder. as long as transaction serializers are correctly registered there cannot be any errors
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapter(Payment.class, new TransactionSerializer());
         Gson gson = gsonBuilder.create();
@@ -148,5 +148,5 @@ public class TransactionSerializerTest {
         assertDoesNotThrow(privateBank::readAccounts);
         assertEquals(privateBank.accountsToTransactions.get(name).size(), readTransactions.size());
     }
-    */
+     */
 }
