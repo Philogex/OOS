@@ -69,6 +69,7 @@ public class PrivateBank implements Bank {
      * @param p_incomingInterest value to be assigned to object
      */
     public void setIncomingInterest(double p_incomingInterest) {
+        // [!] transaction attribute exception
         this.incomingInterest = p_incomingInterest;
     }
 
@@ -180,6 +181,7 @@ public class PrivateBank implements Bank {
         }
         Set<Transaction> duplicateTransactions = new HashSet<>();
         for (Transaction transaction : p_transactions) {
+            // TODO add instance of Payment with setter
             if (!duplicateTransactions.add(transaction)) {
                 throw new TransactionAlreadyExistException();
             }
@@ -206,6 +208,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void addTransaction(String p_account, Transaction p_transaction) throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException, TransactionAttributeValidationException {
+        // TODO instance of
         p_transaction.overwriteInterest(this.getIncomingInterest(), this.getOutgoingInterest());
 
         if (!accountsToTransactions.containsKey(p_account)) {
@@ -346,7 +349,7 @@ public class PrivateBank implements Bank {
             if (Files.exists(filePath)) {
                 try (Reader reader = Files.newBufferedReader(filePath)) {
                     GsonBuilder gsonBuilder = new GsonBuilder();
-                    gsonBuilder.registerTypeAdapter(Transaction.class, new TransactionSerializer());
+                    gsonBuilder.registerTypeHierarchyAdapter(Transaction.class, new TransactionSerializer());
                     Gson gson = gsonBuilder.create();
 
                     Type transactionListType = new TypeToken<List<Transaction>>() {}.getType();
@@ -374,8 +377,7 @@ public class PrivateBank implements Bank {
         try (Writer writer = Files.newBufferedWriter(filePath)) {
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.setPrettyPrinting();
-            //I FUCKING HATE IT
-            gsonBuilder.registerTypeAdapter(Transaction.class, new TransactionSerializer()).registerTypeAdapter(Payment.class, new TransactionSerializer()).registerTypeAdapter(Transfer.class, new TransactionSerializer()).registerTypeAdapter(OutgoingTransfer.class, new TransactionSerializer()).registerTypeAdapter(IncomingTransfer.class, new TransactionSerializer());
+            gsonBuilder.registerTypeHierarchyAdapter(Transaction.class, new TransactionSerializer());
             Gson gson = gsonBuilder.create();
 
             List<Transaction> transactions = accountsToTransactions.get(p_account);

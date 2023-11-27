@@ -85,6 +85,7 @@ public class Payment extends Transaction {
                 throw new TransactionAttributeValidationException("incomingInterest cannot be outside the range [0, 1].");
             this.incomingInterest = p_incomingInterest;
         }
+        // [!] throw to main
         catch (TransactionAttributeValidationException e) {
             System.out.println(e + " for object:\n" + this + "\nsetting incomingInterest to 0.");
             this.incomingInterest = 0.;
