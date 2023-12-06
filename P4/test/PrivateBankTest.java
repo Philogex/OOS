@@ -102,8 +102,6 @@ class PrivateBankTest {
 
         assertThrows(AccountAlreadyExistsException.class, () -> privateBank.createAccount("AAAACEOUNT"));
 
-
-
         //public void createAccount(String p_account, List<Transaction> p_transactions)
         List<Transaction> transactions = new ArrayList<>();
         Payment validPayment = new Payment();
