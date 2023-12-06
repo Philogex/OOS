@@ -2,13 +2,13 @@ import com.google.gson.*;
 import bank.*;
 
 import java.io.File;
-import java.nio.file.*;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TransactionSerializerTest {
     static String dir = "./test_data";
+    private PrivateBank privateBank;
 
     @org.junit.jupiter.api.AfterAll
     public static void cleanup() {
@@ -24,13 +24,17 @@ public class TransactionSerializerTest {
         }
     }
 
+    @org.junit.jupiter.api.AfterEach
+    public void resetBank() {
+        privateBank = null;
+    }
+
     @org.junit.jupiter.api.Test
     void testPaymentSerialization() {
-        PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
+        assertDoesNotThrow(() -> privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir));
 
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
-        Transaction validTransaction = new Payment();
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Payment()));
 
         //get transactions for account payment
         List<Transaction> transactions = privateBank.accountsToTransactions.get("payment");
@@ -73,11 +77,10 @@ public class TransactionSerializerTest {
 
     @org.junit.jupiter.api.Test
     void testPaymentDeserialization() {
-        PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
+        assertDoesNotThrow(() -> privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir));
 
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
-        Payment validTransaction = new Payment();
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Payment()));
 
         //get transactions for account payment
         List<Transaction> transactions = privateBank.accountsToTransactions.get("payment");
@@ -121,7 +124,7 @@ public class TransactionSerializerTest {
     }
 
     /*
-    //commented out bc of private class
+    //commented out bc of private class. i can test this with getDeclaredMehods, but i dont't want to right now / for this project
     @org.junit.jupiter.api.Test
     void testReadWriteAccounts() {
         PrivateBank privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);

@@ -1,6 +1,6 @@
 package bank;
 
-import com.google.gson.annotations.SerializedName;
+import bank.exceptions.TransactionAttributeException;
 
 /**
  * base class for Transactions of any kind
@@ -27,7 +27,7 @@ public abstract class Transaction implements CalculateBill {
      * default amount: 0.5 <br>
      * default description: "initialization"
      */
-    public Transaction () {
+    public Transaction () throws TransactionAttributeException {
         this.setDate("01/01/1990");
         this.setAmount(1000);
         this.setDescription("initialization");
@@ -37,7 +37,7 @@ public abstract class Transaction implements CalculateBill {
      * copy constructor
      * @param p_transaction object to be used as copy reference
      */
-    public Transaction (Transaction p_transaction) {
+    public Transaction (Transaction p_transaction) throws TransactionAttributeException {
         this.setDate(p_transaction.date);
         this.setAmount(p_transaction.amount);
         this.setDescription(p_transaction.description);
@@ -49,7 +49,7 @@ public abstract class Transaction implements CalculateBill {
      * @param p_amount amount to be assigned to attribute:amount
      * @param p_description description to be assigned to attribute:description
      */
-    public Transaction (String p_date, double p_amount, String p_description) {
+    public Transaction (String p_date, double p_amount, String p_description) throws TransactionAttributeException {
         this.setDate(p_date);
         this.setAmount(p_amount);
         this.setDescription(p_description);
@@ -91,7 +91,7 @@ public abstract class Transaction implements CalculateBill {
      * setter for amount
      * @param p_amount value to be assigned to object
      */
-    public void setAmount(double p_amount) {
+    public void setAmount(double p_amount) throws TransactionAttributeException {
         this.amount = p_amount;
     }
 
@@ -142,13 +142,6 @@ public abstract class Transaction implements CalculateBill {
      * @return true if attributes are valid or false if not
      */
     public boolean validateTransactionAttributes() {
-        return this.getDate() != null && !this.getDate().isEmpty() && this.getDescription() != null && this.getAmount() != 0.;
+        return this.getDate() != null && !this.getDate().isEmpty() && this.getDescription() != null && !this.getDescription().isEmpty() && this.getAmount() != 0.;
     }
-
-    /**
-     * overwrites attributes incomingInterest and outgoingInterest in case of a payment
-     * @param p_incomingInterest value to overwrite incoming interest rate
-     * @param p_outgoingInterest value to overwrite incoming interest rate
-     */
-    public abstract void overwriteInterest(double p_incomingInterest, double p_outgoingInterest);
 }

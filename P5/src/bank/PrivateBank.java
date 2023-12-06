@@ -66,18 +66,24 @@ public class PrivateBank implements Bank {
 
     /**
      * setter for incomingInterest attribute
-     * @param p_incomingInterest value to be assigned to object
+     * @param p_interest value to be assigned to object
      */
-    public void setIncomingInterest(double p_incomingInterest) {
-        this.incomingInterest = p_incomingInterest;
+    public void setIncomingInterest(double p_interest) throws TransactionAttributeException {
+        if(p_interest > 1. || p_interest < 0.) {
+            throw new TransactionAttributeException();
+        }
+        this.incomingInterest = p_interest;
     }
 
     /**
      * setter for outgoingInterest attribute
-     * @param p_outgoingInterest value to be assigned to object
+     * @param p_interest value to be assigned to object
      */
-    public void setOutgoingInterest(double p_outgoingInterest) {
-        this.outgoingInterest = p_outgoingInterest;
+    public void setOutgoingInterest(double p_interest) throws TransactionAttributeException {
+        if(p_interest > 1. || p_interest < 0.) {
+            throw new TransactionAttributeException();
+        }
+        this.outgoingInterest = p_interest;
     }
 
     /**
@@ -87,7 +93,7 @@ public class PrivateBank implements Bank {
      * @param p_outgoingInterest interest for withdrawals. value is in [0., 1.]
      * @param p_directoryName directory name for serialized json data of bank accounts
      */
-    public PrivateBank(String p_name, double p_incomingInterest, double p_outgoingInterest, String p_directoryName) {
+    public PrivateBank(String p_name, double p_incomingInterest, double p_outgoingInterest, String p_directoryName) throws TransactionAttributeException {
         this.setName(p_name);
         this.setIncomingInterest(p_incomingInterest);
         this.setOutgoingInterest(p_outgoingInterest);
@@ -98,7 +104,7 @@ public class PrivateBank implements Bank {
      * copy constructor for all attributes apart from accountsToTransactions, which is initialized without value on object initialization
      * @param p_privateBank object to be copied
      */
-    public PrivateBank(PrivateBank p_privateBank) {
+    public PrivateBank(PrivateBank p_privateBank) throws TransactionAttributeException {
         this.setName(p_privateBank.getName());
         this.setIncomingInterest(p_privateBank.getIncomingInterest());
         this.setOutgoingInterest(p_privateBank.getOutgoingInterest());
@@ -180,6 +186,10 @@ public class PrivateBank implements Bank {
         }
         Set<Transaction> duplicateTransactions = new HashSet<>();
         for (Transaction transaction : p_transactions) {
+            if(transaction instanceof Payment) {
+                ((Payment) transaction).setIncomingInterest(this.getIncomingInterest());
+                ((Payment) transaction).setOutgoingInterest(this.getOutgoingInterest());
+            }
             if (!duplicateTransactions.add(transaction)) {
                 throw new TransactionAlreadyExistException();
             }
@@ -205,8 +215,11 @@ public class PrivateBank implements Bank {
      * @throws TransactionAttributeException transaction attribute invalid
      */
     @Override
-    public void addTransaction(String p_account, Transaction p_transaction) throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException, TransactionAttributeValidationException {
-        p_transaction.overwriteInterest(this.getIncomingInterest(), this.getOutgoingInterest());
+    public void addTransaction(String p_account, Transaction p_transaction) throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException {
+        if(p_transaction instanceof Payment) {
+            ((Payment) p_transaction).setIncomingInterest(this.getIncomingInterest());
+            ((Payment) p_transaction).setOutgoingInterest(this.getOutgoingInterest());
+        }
 
         if (!accountsToTransactions.containsKey(p_account)) {
             throw new AccountDoesNotExistException();
@@ -346,7 +359,7 @@ public class PrivateBank implements Bank {
             if (Files.exists(filePath)) {
                 try (Reader reader = Files.newBufferedReader(filePath)) {
                     GsonBuilder gsonBuilder = new GsonBuilder();
-                    gsonBuilder.registerTypeAdapter(Transaction.class, new TransactionSerializer());
+                    gsonBuilder.registerTypeHierarchyAdapter(Transaction.class, new TransactionSerializer());
                     Gson gson = gsonBuilder.create();
 
                     Type transactionListType = new TypeToken<List<Transaction>>() {}.getType();
@@ -374,8 +387,7 @@ public class PrivateBank implements Bank {
         try (Writer writer = Files.newBufferedWriter(filePath)) {
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.setPrettyPrinting();
-            //I FUCKING HATE IT
-            gsonBuilder.registerTypeAdapter(Transaction.class, new TransactionSerializer()).registerTypeAdapter(Payment.class, new TransactionSerializer()).registerTypeAdapter(Transfer.class, new TransactionSerializer()).registerTypeAdapter(OutgoingTransfer.class, new TransactionSerializer()).registerTypeAdapter(IncomingTransfer.class, new TransactionSerializer());
+            gsonBuilder.registerTypeHierarchyAdapter(Transaction.class, new TransactionSerializer());
             Gson gson = gsonBuilder.create();
 
             List<Transaction> transactions = accountsToTransactions.get(p_account);

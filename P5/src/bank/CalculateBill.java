@@ -1,7 +1,5 @@
 package bank;
 
-import bank.exceptions.TransactionAttributeValidationException;
-
 /**
  * Interface includes functions for caluculating a bill of a Transaction
  */

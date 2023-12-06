@@ -1,5 +1,7 @@
 package bank;
 
+import bank.exceptions.TransactionAttributeException;
+
 /**
  * incoming transfers
  */
@@ -8,7 +10,7 @@ public class IncomingTransfer extends Transfer {
     /**
      * default constructor calling base default constructor
      */
-    public IncomingTransfer() {
+    public IncomingTransfer() throws TransactionAttributeException {
         super();
     }
 
@@ -20,7 +22,7 @@ public class IncomingTransfer extends Transfer {
      * @param p_sender sender
      * @param p_recipient recipient
      */
-    public IncomingTransfer(String p_date, double p_amount, String p_description, String p_sender, String p_recipient) {
+    public IncomingTransfer(String p_date, double p_amount, String p_description, String p_sender, String p_recipient) throws TransactionAttributeException {
         super(p_date, p_amount, p_description, p_sender, p_recipient);
     }
 

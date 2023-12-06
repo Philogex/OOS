@@ -41,7 +41,7 @@ public interface Bank {
      * @throws TransactionAttributeException    if the validation check for certain attributes fail
      */
     void addTransaction(String account, Transaction transaction)
-            throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException, TransactionAttributeValidationException ;
+            throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException;
 
     /**
      * Removes a transaction from an account. If the transaction does not exist, an exception is

@@ -3,7 +3,6 @@ import bank.*;
 import java.io.File;
 import java.util.*;
 import bank.exceptions.*;
-import java.nio.file.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +12,7 @@ class PrivateBankTest {
 
     @org.junit.jupiter.api.BeforeEach
     public void setup() {
-        privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
+        assertDoesNotThrow(() -> privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir));
     }
 
     @org.junit.jupiter.api.AfterAll
@@ -28,6 +27,11 @@ class PrivateBankTest {
             }
             directory.delete();
         }
+    }
+
+    @org.junit.jupiter.api.AfterEach
+    public void resetBank() {
+        privateBank = null;
     }
 
     @org.junit.jupiter.api.Test
@@ -53,20 +57,24 @@ class PrivateBankTest {
 
     @org.junit.jupiter.api.Test
     void setIncomingInterest() {
-        privateBank.setIncomingInterest(1.);
+        assertDoesNotThrow(() -> privateBank.setIncomingInterest(1.));
         assertEquals(1., privateBank.getIncomingInterest());
     }
 
     @org.junit.jupiter.api.Test
     void setOutgoingInterest() {
-        privateBank.setOutgoingInterest(1.);
+        assertDoesNotThrow(() -> privateBank.setOutgoingInterest(1.));
         assertEquals(1., privateBank.getOutgoingInterest());
     }
 
     @org.junit.jupiter.api.Test
     void testEquals() {
-        PrivateBank equalsBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
-        PrivateBank notEqualsBank = new PrivateBank("WRONG", 0.9, 0.9, dir);
+        PrivateBank equalsBank = null;
+        PrivateBank notEqualsBank = null;
+        try {
+            equalsBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir);
+            notEqualsBank = new PrivateBank("WRONG", 0.9, 0.9, dir);
+        } catch (Exception e) {}
 
         assertEquals(privateBank, equalsBank);
         assertNotEquals(privateBank, notEqualsBank);
@@ -77,15 +85,17 @@ class PrivateBankTest {
         String name = "THEY WONT TAKE ME ALIVE";
         double incomingInterest = 0.1;
         double outgoingInterest = 0.1;
-        PrivateBank constructorBank = new PrivateBank(name, incomingInterest, outgoingInterest, dir);
+        PrivateBank constructorBank = null;
+        try {
+            constructorBank = new PrivateBank(name, incomingInterest, outgoingInterest, dir);
+        } catch(Exception e) {}
         assertEquals(name, constructorBank.getName());
         assertEquals(incomingInterest, constructorBank.getIncomingInterest());
         assertEquals(outgoingInterest, constructorBank.getOutgoingInterest());
         assertTrue(constructorBank.accountsToTransactions.isEmpty());
 
-        PrivateBank copyBank = new PrivateBank(privateBank);
-        assertEquals(copyBank, privateBank);
-        assertNotSame(copyBank, privateBank);
+        assertDoesNotThrow(() -> assertEquals(new PrivateBank(privateBank), privateBank));
+        assertDoesNotThrow(() -> assertNotSame(new PrivateBank(privateBank), privateBank));
     }
 
     @org.junit.jupiter.api.Test
@@ -102,12 +112,14 @@ class PrivateBankTest {
 
         assertThrows(AccountAlreadyExistsException.class, () -> privateBank.createAccount("AAAACEOUNT"));
 
-
-
         //public void createAccount(String p_account, List<Transaction> p_transactions)
         List<Transaction> transactions = new ArrayList<>();
-        Payment validPayment = new Payment();
-        Transfer validTransfer = new Transfer();
+        Payment validPayment  = null;
+        Transfer validTransfer = null;
+        try {
+            validPayment = new Payment();
+            validTransfer = new Transfer();
+        } catch (Exception e) {}
         transactions.add(validPayment);
         transactions.add(validTransfer);
 
@@ -122,7 +134,10 @@ class PrivateBankTest {
         assertThrows(TransactionAlreadyExistException.class, () -> privateBank.createAccount("AAAACEOUNTTTT", transactions));
 
         List<Transaction> transactionsAttribute = new ArrayList<>();
-        Payment invalidPayment = new Payment("", 1, "description", 0.5, 0.5);
+        Payment invalidPayment = null;
+        try {
+            invalidPayment = new Payment("", 1, "description", 0.5, 0.5);
+        } catch (Exception e) {}
         transactionsAttribute.add(invalidPayment);
         assertThrows(TransactionAttributeException.class, () -> privateBank.createAccount("AAAACEOUNTTTTTTTTTTTTTT", transactionsAttribute));
     }
@@ -131,10 +146,16 @@ class PrivateBankTest {
     void containsTransaction() {
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
 
-        Transaction validTransaction = new Payment();
-        Transaction validTransaction_3 = new Payment("a", 1, "", 0.5, 0.5);
+        Transaction validTransaction = null;
+        Transaction validTransaction_3 = null;
 
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+        try {
+            validTransaction = new Payment();
+            validTransaction_3 = new Payment("a", 1, "", 0.5, 0.5);
+        } catch (Exception e) {}
+
+        Transaction finalValidTransaction = validTransaction;
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", finalValidTransaction));
         assertTrue(privateBank.containsTransaction("payment", validTransaction));
         //assertTrue(privateBank.containsTransaction("payment", validTransaction_2));
         assertFalse(privateBank.containsTransaction("payment", validTransaction_3));
@@ -142,39 +163,47 @@ class PrivateBankTest {
 
     @org.junit.jupiter.api.Test
     void addTransactionAccountDoesNotExist() {
-        Transaction validTransaction = new Payment();
-
-        assertThrows(AccountDoesNotExistException.class, () -> privateBank.addTransaction("", validTransaction));
+        Transaction validTransaction = null;
+        try {
+            validTransaction = new Payment();
+        } catch (Exception e) {}
+        Transaction finalValidTransaction = validTransaction;
+        assertThrows(AccountDoesNotExistException.class, () -> privateBank.addTransaction("", finalValidTransaction));
     }
 
     @org.junit.jupiter.api.Test
     void addTransactionTransactionAlreadyExist() {
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
 
-        Payment validTransaction = new Payment();
+        Payment validTransaction = null;
+        try {
+            validTransaction = new Payment();
+        } catch (Exception e) {}
 
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+        Payment finalValidTransaction = validTransaction;
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", finalValidTransaction));
         assertTrue(privateBank.containsTransaction("payment", validTransaction));
 
-        assertThrows(TransactionAlreadyExistException.class, () -> privateBank.addTransaction("payment", validTransaction));
+        assertThrows(TransactionAlreadyExistException.class, () -> privateBank.addTransaction("payment", finalValidTransaction));
     }
 
     @org.junit.jupiter.api.Test
     void addTransactionTransactionAttribute() {
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
 
-        Transaction invalidTransaction = new Payment("", 1, "", 0.5, 0.5);
-
-        assertThrows(TransactionAttributeException.class, () -> privateBank.addTransaction("payment", invalidTransaction));
+        assertThrows(TransactionAttributeException.class, () -> privateBank.addTransaction("payment", new Payment("", 1, "", 0.5, 0.5)));
     }
 
     @org.junit.jupiter.api.Test
     void addTransaction() {
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
 
-        Transaction validTransaction = new Payment();
+        Transaction validTransaction = null;
+        try {
+            validTransaction = new Payment();
+        } catch (Exception e) {}
 
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Payment()));
         assertTrue(privateBank.containsTransaction("payment", validTransaction));
     }
 
@@ -182,38 +211,46 @@ class PrivateBankTest {
     void removeTransactionAccountDoesNotExist() {
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
 
-        Transaction validTransaction = new Payment();
+        Transaction validTransaction = null;
+        try {
+            validTransaction = new Payment();
+        } catch (Exception e) {}
 
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Payment()));
         assertTrue(privateBank.containsTransaction("payment", validTransaction));
 
-        assertThrows(AccountDoesNotExistException.class, () -> privateBank.removeTransaction("payment1", validTransaction));
+        Transaction finalValidTransaction = validTransaction;
+        assertThrows(AccountDoesNotExistException.class, () -> privateBank.removeTransaction("payment1", finalValidTransaction));
     }
 
     @org.junit.jupiter.api.Test
     void removeTransactionTransactionDoesNotExist() {
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
 
-        Transaction validTransaction = new Payment();
+        Transaction validTransaction = null;
+        try {
+            validTransaction = new Payment();
+        } catch (Exception e) {}
 
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Payment()));
         assertTrue(privateBank.containsTransaction("payment", validTransaction));
 
-        Transaction validTransaction_2 = new Payment("a", 1, "", 0.5, 0.5);
-
-        assertThrows(TransactionDoesNotExistException.class, () -> privateBank.removeTransaction("payment", validTransaction_2));
+        assertThrows(TransactionDoesNotExistException.class, () -> privateBank.removeTransaction("payment", new Payment("a", 1, "", 0.5, 0.5)));
     }
 
     @org.junit.jupiter.api.Test
     void removeTransaction() {
         assertDoesNotThrow(() -> privateBank.createAccount("payment"));
 
-        Transaction validTransaction = new Payment();
+        Transaction validTransaction = null;
+        try {
+            validTransaction = new Payment();
+        } catch (Exception e) {}
 
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Payment()));
         assertTrue(privateBank.containsTransaction("payment", validTransaction));
 
-        assertDoesNotThrow(() -> privateBank.removeTransaction("payment", validTransaction));
+        assertDoesNotThrow(() -> privateBank.removeTransaction("payment", new Payment()));
     }
 
     @org.junit.jupiter.api.Test
@@ -223,36 +260,30 @@ class PrivateBankTest {
         assertEquals(0., privateBank.getAccountBalance("payment"));
 
         //account with one payment into account
-        Transaction validTransaction_1 = new Payment("date", 1000, "", 0.5, 0.5);
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction_1));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Payment("date", 1000, "a", 0.5, 0.5)));
         assertEquals(500., privateBank.getAccountBalance("payment"));
 
         //account with one payment into account and one out of account with equal value
-        Transaction validTransaction_2 = new Payment("date", -1000, "", 0.5, 0.5);
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction_2));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Payment("date", -1000, "a", 0.5, 0.5)));
         assertEquals(-1000., privateBank.getAccountBalance("payment"));
 
         //account with one payment into account, one out of account with equal value and one incoming transfer
-        Transaction validTransaction_3 = new Transfer("date", 1000, "", "a", "payment");
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction_3));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Transfer("date", 1000, "a", "a", "payment")));
         assertEquals(0., privateBank.getAccountBalance("payment"));
 
         //account with one payment into account, one out of account with equal value, one incoming transfer and one outgoing transfer
         /*
          * TEST CASES DO NOT MATCH ACTUAL RESULTS
          */
-        Transaction validTransaction_4 = new Transfer("date", 1000, "", "b", "payment");
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction_4));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new Transfer("date", 1000, "a", "b", "payment")));
         assertEquals(1000., privateBank.getAccountBalance("payment"));
 
         //account with one payment into account, one out of account with equal value, one incoming transfer and one outgoing transfer
-        Transaction validTransaction_5 = new OutgoingTransfer("1", 1000, "", "a", "b");
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction_5));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new OutgoingTransfer("1", 1000, "a", "a", "b")));
         assertEquals(0., privateBank.getAccountBalance("payment"));
 
         //account with one payment into account, one out of account with equal value, one incoming transfer and one outgoing transfer
-        Transaction validTransaction_6 = new IncomingTransfer("2", 1000, "", "a", "b");
-        assertDoesNotThrow(() -> privateBank.addTransaction("payment", validTransaction_6));
+        assertDoesNotThrow(() -> privateBank.addTransaction("payment", new IncomingTransfer("2", 1000, "a", "a", "b")));
         assertEquals(1000., privateBank.getAccountBalance("payment"));
     }
 
@@ -266,21 +297,29 @@ class PrivateBankTest {
         assertEquals(privateBank.getTransactions("transactions"), new ArrayList<>());
 
         //check for transaction
-        Transaction validTransaction = new Payment("date", 1000, "", 0.5, 0.5);
-        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", validTransaction));
+        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", new Payment("date", 1000, "b", 0.5, 0.5)));
         assertNotEquals(privateBank.getTransactions("transactions"), new ArrayList<>());
     }
 
     @org.junit.jupiter.api.Test
     void getTransactionsSorted() {
+        assertDoesNotThrow(() -> privateBank.setOutgoingInterest(0.));
+        assertDoesNotThrow(() -> privateBank.setIncomingInterest(0.));
         //add elements
         assertDoesNotThrow(() -> privateBank.createAccount("transactions"));
-        Transaction validTransaction_1 = new Payment("date", 1, "", 0.5, 0.5);
-        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", validTransaction_1));
-        Transaction validTransaction_3 = new Payment("date", 3, "", 0.5, 0.5);
-        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", validTransaction_3));
-        Transaction validTransaction_2 = new Payment("date", 2, "", 0.5, 0.5);
-        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", validTransaction_2));
+        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", new Payment("date", 1, "a", 0.0, 0.0)));
+        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", new Payment("date", 3, "c", 0.0, 0.0)));
+        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", new Payment("date", 2, "b", 0.0, 0.0)));
+
+        Transaction validTransaction_1 = null;
+        Transaction validTransaction_3 = null;
+        Transaction validTransaction_2 = null;
+
+        try {
+            validTransaction_1 = new Payment("date", 1, "a", 0.0, 0.0);
+            validTransaction_2 = new Payment("date", 2, "b", 0.0, 0.0);
+            validTransaction_3 = new Payment("date", 3, "c", 0.0, 0.0);
+        } catch (Exception e) {}
 
         //check asc
         List<Transaction> ascending = privateBank.getTransactionsSorted("transactions", true);
@@ -299,14 +338,26 @@ class PrivateBankTest {
     void getTransactionsByType() {
         //add elements
         assertDoesNotThrow(() -> privateBank.createAccount("transactions"));
-        Transaction validTransaction_1 = new Payment("date", -1000, "outgoing", 0.5, 0.5);
-        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", validTransaction_1));
-        Transaction validTransaction_2 = new Payment("date", 1000, "incoming", 0.5, 0.5);
-        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", validTransaction_2));
-        Transaction validTransaction_3 = new OutgoingTransfer("date", 1000, "outgoing", "a", "b");
-        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", validTransaction_3));
-        Transaction validTransaction_4 = new IncomingTransfer("date", 500, "incoming", "a", "b");
-        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", validTransaction_4));
+        Transaction validTransaction_1 = null;
+        Transaction validTransaction_2 = null;
+        Transaction validTransaction_3 = null;
+        Transaction validTransaction_4 = null;
+
+        try {
+            validTransaction_1 = new Payment("date", -1000, "outgoing", 0.5, 0.5);
+            validTransaction_2 = new Payment("date", 1000, "incoming", 0.5, 0.5);
+            validTransaction_3 = new OutgoingTransfer("date", 1000, "outgoing", "a", "b");
+            validTransaction_4 = new IncomingTransfer("date", 500, "incoming", "a", "b");
+        } catch (Exception e) {}
+
+        Transaction finalValidTransaction_ = validTransaction_1;
+        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", finalValidTransaction_));
+        Transaction finalValidTransaction_1 = validTransaction_2;
+        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", finalValidTransaction_1));
+        Transaction finalValidTransaction_2 = validTransaction_3;
+        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", finalValidTransaction_2));
+        Transaction finalValidTransaction_3 = validTransaction_4;
+        assertDoesNotThrow(() -> privateBank.addTransaction("transactions", finalValidTransaction_3));
 
         //check incoming
         List<Transaction> incoming = privateBank.getTransactionsByType("transactions", true);

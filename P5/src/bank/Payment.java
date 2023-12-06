@@ -26,7 +26,7 @@ public class Payment extends Transaction {
      * default outgoing interest: 0.5
      * @see Transaction#Transaction()
      */
-    public Payment() {
+    public Payment() throws TransactionAttributeException {
         super();
         this.setIncomingInterest(0.5);
         this.setOutgoingInterest(0.5);
@@ -37,7 +37,7 @@ public class Payment extends Transaction {
      * @param p_payment object to be used as copy reference
      * @see Transaction#Transaction(Transaction p_payment)
      */
-    public Payment (Payment p_payment) {
+    public Payment (Payment p_payment) throws TransactionAttributeException {
         super(p_payment);
         this.setIncomingInterest(p_payment.incomingInterest);
         this.setOutgoingInterest(p_payment.outgoingInterest);
@@ -52,7 +52,7 @@ public class Payment extends Transaction {
      * @param p_outgoingInterest outgoing interest to be assigned to attribute:outgoingInterest
      * @see Transaction#Transaction(String p_date, double p_amount, String p_description)
      */
-    public Payment (String p_date, double p_amount, String p_description, double p_incomingInterest, double p_outgoingInterest) {
+    public Payment (String p_date, double p_amount, String p_description, double p_incomingInterest, double p_outgoingInterest) throws TransactionAttributeException {
         super(p_date, p_amount, p_description);
         this.setOutgoingInterest(p_incomingInterest);
         this.setOutgoingInterest(p_outgoingInterest);
@@ -78,34 +78,22 @@ public class Payment extends Transaction {
      * setter for incoming Interest
      * @param p_incomingInterest value to be assigned to object. checks if value in [0., 1.]
      */
-    public void setIncomingInterest(double p_incomingInterest)
+    public void setIncomingInterest(double p_incomingInterest) throws TransactionAttributeException
     {
-        try {
-            if(this.getIncomingInterest() < 0. || this.getIncomingInterest() > 1.)
-                throw new TransactionAttributeValidationException("incomingInterest cannot be outside the range [0, 1].");
-            this.incomingInterest = p_incomingInterest;
-        }
-        catch (TransactionAttributeValidationException e) {
-            System.out.println(e + " for object:\n" + this + "\nsetting incomingInterest to 0.");
-            this.incomingInterest = 0.;
-        }
+        if(this.getIncomingInterest() < 0. || this.getIncomingInterest() > 1.)
+            throw new TransactionAttributeException();
+        this.incomingInterest = p_incomingInterest;
     }
 
     /**
      * setter for outoingInterest
      * @param p_outgoingInterest value to be assigned to object. checks if value in [0., 1.]
      */
-    public void setOutgoingInterest(double p_outgoingInterest)
+    public void setOutgoingInterest(double p_outgoingInterest) throws TransactionAttributeException
     {
-        try {
-            if(this.getOutgoingInterest() < 0. || this.getOutgoingInterest() > 1.)
-                throw new TransactionAttributeValidationException("outgoingInterest cannot be outside the range [0, 1].");
-            this.outgoingInterest = p_outgoingInterest;
-        }
-        catch (TransactionAttributeValidationException e) {
-            System.out.println(e + " for object:\n" + this + "\nsetting outgoingInterest to 0.");
-            this.outgoingInterest = 0.;
-        }
+        if(this.getOutgoingInterest() < 0. || this.getOutgoingInterest() > 1.)
+            throw new TransactionAttributeException();
+        this.outgoingInterest = p_outgoingInterest;
     }
 
     /**
@@ -172,17 +160,6 @@ public class Payment extends Transaction {
         if(!super.validateTransactionAttributes())
             return false;
 
-        return this.getIncomingInterest() < 1. && this.getIncomingInterest() > 0. && this.getOutgoingInterest() < 1. && this.getOutgoingInterest() > 0.;
-    }
-
-    /**
-     * replaces current interest rate with provided interests
-     * @param p_incomingInterest interest rates for incoming transactions
-     * @param p_outgoingInterest interest rate for outgoing transactions
-     */
-    @Override
-    public void overwriteInterest(double p_incomingInterest, double p_outgoingInterest) {
-        this.setIncomingInterest(p_incomingInterest);
-        this.setOutgoingInterest(p_outgoingInterest);
+        return this.getIncomingInterest() <= 1. && this.getIncomingInterest() >= 0. && this.getOutgoingInterest() <= 1. && this.getOutgoingInterest() >= 0.;
     }
 }

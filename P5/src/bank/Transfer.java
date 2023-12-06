@@ -26,7 +26,7 @@ public class Transfer extends Transaction {
      * default recipient: "initialization"
      * @see Transaction#Transaction()
      */
-    public Transfer() {
+    public Transfer() throws TransactionAttributeException {
         super();
         this.setSender("initialization_1");
         this.setRecipient("initialization_2");
@@ -37,7 +37,7 @@ public class Transfer extends Transaction {
      * @param p_transfer object to be used as copy reference
      * @see Transaction#Transaction(Transaction p_transfer)
      */
-    public Transfer (Transfer p_transfer) {
+    public Transfer (Transfer p_transfer) throws TransactionAttributeException {
         super(p_transfer);
         this.setSender(p_transfer.sender);
         this.setRecipient(p_transfer.recipient);
@@ -52,7 +52,7 @@ public class Transfer extends Transaction {
      * @param p_recipient recipient to be assigned to attribute:recipient
      * @see Transaction#Transaction(String p_date, double p_amount, String p_description)
      */
-    public Transfer (String p_date, double p_amount, String p_description, String p_sender, String p_recipient) {
+    public Transfer (String p_date, double p_amount, String p_description, String p_sender, String p_recipient) throws TransactionAttributeException {
         super(p_date, p_amount, p_description);
         this.setSender(p_sender);
         this.setRecipient(p_recipient);
@@ -87,16 +87,11 @@ public class Transfer extends Transaction {
      * @param p_amount value to be assigned to object
      */
     @Override
-    public void setAmount(double p_amount) {
-        try {
-            if(p_amount < 0) {
-                throw new TransactionAttributeValidationException("amount negative");
-            }
-            super.setAmount(p_amount);
-        } catch (TransactionAttributeValidationException e) {
-            System.out.println(e + " for object:\n" + this + "\ninverting value.");
-            super.setAmount(-p_amount);
+    public void setAmount(double p_amount) throws TransactionAttributeException {
+        if(p_amount < 0) {
+            throw new TransactionAttributeException();
         }
+        super.setAmount(p_amount);
     }
 
     /**
@@ -167,12 +162,4 @@ public class Transfer extends Transaction {
 
         return this.getRecipient() != null && !this.getRecipient().isEmpty() && this.getSender() != null && !this.getSender().isEmpty() && !this.getSender().equals(this.getRecipient());
     }
-
-    /**
-     * implementation of abstract method, but does nothing for Transfer objects
-     * @param p_incomingInterest interest rates for incoming transactions
-     * @param p_outgoingInterest interest rate for outgoing transactions
-     */
-    @Override
-    public void overwriteInterest(double p_incomingInterest, double p_outgoingInterest) {}
 }
