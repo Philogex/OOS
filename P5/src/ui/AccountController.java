@@ -211,22 +211,23 @@ public class AccountController implements Initializable {
         } else if(Objects.equals(menuItem.getId(),"transfer")){ // Transfer
             incomingInterest_sender.setText("Sender: ");
             outgoingInterest_recipient.setText("Empfänger: ");
-            if(outgoingInterest_recipientText.getText().equals(name)){ // Incoming Transfer
-                dialog.setTitle("Incomingtransfer");
-                dialog.setResultConverter(buttonType->{
-                    if(buttonType == okButton){
-                        if (Objects.equals(dateText.getText(), "") ||
-                                Objects.equals(amountText.getText(), "") ||
-                                Objects.equals(descriptionText.getText(),"") ||
-                                Objects.equals(incomingInterest_senderText.getText(), "") ||
-                                Objects.equals(outgoingInterest_recipientText.getText(), ""))
-                        {
-                            invalid.setContentText("Ungültige Werte");
-                            Optional<ButtonType> optional = invalid.showAndWait();
-                            if(optional.isPresent() && optional.get() == ButtonType.OK){
-                                text.setText("Es wurde nicht gemacht");
-                            }
-                        } else {
+
+            dialog.setResultConverter(buttonType->{
+                if(buttonType == okButton){
+                    if (Objects.equals(dateText.getText(), "") ||
+                            Objects.equals(amountText.getText(), "") ||
+                            Objects.equals(descriptionText.getText(),"") ||
+                            Objects.equals(incomingInterest_senderText.getText(), "") ||
+                            Objects.equals(outgoingInterest_recipientText.getText(), ""))
+                    {
+                        invalid.setContentText("Ungültige Werte");
+                        Optional<ButtonType> optional = invalid.showAndWait();
+                        if(optional.isPresent() && optional.get() == ButtonType.OK){
+                            text.setText("Es wurde nicht gemacht");
+                        }
+                    } else {
+                        if(outgoingInterest_recipientText.getText().equals(name)){ // Incoming Transfer
+                            dialog.setTitle("Incomingtransfer");
                             IncomingTransfer incomingTransfer = null;
                             try {
                                 incomingTransfer = new IncomingTransfer(dateText.getText(),
@@ -237,8 +238,6 @@ public class AccountController implements Initializable {
                             } catch (TransactionAttributeException e) {
                                 throw new RuntimeException(e);
                             }
-
-
                             try {
                                 privateBank.addTransaction(name,incomingTransfer);
                                 text.setText("Der Incomingtransfer wurde hinzugefügt");
@@ -248,27 +247,8 @@ public class AccountController implements Initializable {
                             update(privateBank.getTransactions(name));
                             accountName.setText(name + " [" + privateBank.getAccountBalance(name) + "€]");
                         }
-                    }
-                    return null;
-                });
-            }
-            else if (incomingInterest_senderText.getText().equals(name)) {// Outgoing Transfer
-                dialog.setTitle("Outgoingtransfer");
-
-                dialog.setResultConverter(buttonType -> {
-                    if(buttonType==okButton){
-                        if (Objects.equals(dateText.getText(), "") ||
-                                Objects.equals(amountText.getText(), "") ||
-                                Objects.equals(descriptionText.getText(),"") ||
-                                Objects.equals(incomingInterest_senderText.getText(), "") ||
-                                Objects.equals(outgoingInterest_recipientText.getText(), ""))
-                        {
-                            invalid.setContentText("Ungültige werte");
-                            Optional<ButtonType> optional = invalid.showAndWait();
-                            if (optional.isPresent() && optional.get() == ButtonType.OK) {
-                                text.setText("Es wurde nichts gemacht");
-                            }
-                        }else {
+                        else if (incomingInterest_senderText.getText().equals(name)) {// Outgoing Transfer
+                            dialog.setTitle("Outgoingtransfer");
                             OutgoingTransfer outgoingTransfer = null;
                             try {
                                 outgoingTransfer = new OutgoingTransfer(dateText.getText(),
@@ -279,8 +259,6 @@ public class AccountController implements Initializable {
                             } catch (TransactionAttributeException e) {
                                 throw new RuntimeException(e);
                             }
-
-
                             try {
                                 privateBank.addTransaction(name,outgoingTransfer);
                                 text.setText("Outgoing Transfer hinzugefügt");
@@ -292,9 +270,9 @@ public class AccountController implements Initializable {
                             accountName.setText(name + " [" + privateBank.getAccountBalance(name) + "€]");
                         }
                     }
-                    return null;
-                });
-            }
+                }
+                return null;
+            });
         }
     }
 }
