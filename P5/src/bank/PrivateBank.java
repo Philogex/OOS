@@ -98,6 +98,9 @@ public class PrivateBank implements Bank {
         this.setIncomingInterest(p_incomingInterest);
         this.setOutgoingInterest(p_outgoingInterest);
         this.directoryName = p_directoryName;
+        try {
+            this.readAccounts();
+        } catch (Exception e) {}
     }
 
     /**
@@ -109,6 +112,9 @@ public class PrivateBank implements Bank {
         this.setIncomingInterest(p_privateBank.getIncomingInterest());
         this.setOutgoingInterest(p_privateBank.getOutgoingInterest());
         this.directoryName = p_privateBank.directoryName;
+        try {
+            this.readAccounts();
+        } catch (Exception e) {}
     }
 
     /**
@@ -159,6 +165,12 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String p_account) throws AccountAlreadyExistsException {
+        try {
+            this.readAccounts();
+        } catch (IOException e) {
+            System.out.println("Could not synchronize file system on accounts read.");
+        }
+
         if (accountsToTransactions.containsKey(p_account)) {
             throw new AccountAlreadyExistsException();
         }
@@ -181,6 +193,12 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void createAccount(String p_account, List<Transaction> p_transactions) throws AccountAlreadyExistsException, TransactionAlreadyExistException, TransactionAttributeException {
+        try {
+            readAccounts();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         if (accountsToTransactions.containsKey(p_account)) {
             throw new AccountAlreadyExistsException();
         }
@@ -351,6 +369,22 @@ public class PrivateBank implements Bank {
      * @throws IOException io error...
      */
     private void readAccounts() throws IOException {
+        Path fileDirectory = Paths.get(directoryName);
+
+        try {
+            // Get all files in the directory
+            List<Path> files = Files.walk(fileDirectory).filter(Files::isRegularFile).toList();
+
+            // Populate the map with file names as keys and empty lists as values
+            for (Path file : files) {
+                String fileName = file.getFileName().toString();
+                accountsToTransactions.put(fileName.replaceAll("Konto (.+?)\\.json", "$1"), new ArrayList<>());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
+        }
+
         //iterate over account data
         for (String account : accountsToTransactions.keySet()) {
             String fileName = "Konto " + account + ".json";
@@ -397,5 +431,39 @@ public class PrivateBank implements Bank {
                 gson.toJson(transactions, writer);
             }
         }
+    }
+
+    /**
+     * deletes account from back with specific name
+     * @param account
+     * @throws AccountDoesNotExistException
+     * @throws IOException file read/ write error
+     */
+    public void deleteAccount(String account) throws AccountDoesNotExistException, IOException {
+        this.readAccounts();
+
+        if (!accountsToTransactions.containsKey(account))
+            throw new AccountDoesNotExistException();
+
+        accountsToTransactions.remove(account);
+
+        String fileName = "Konto " + account + ".json";
+        Path filePath = Paths.get(directoryName, fileName);
+
+        Files.delete(filePath);
+    }
+
+    /**
+     * getter for all accounts names from accountsToTransactions field
+     * @return all account names
+     */
+    public List<String> getAllAccounts() {
+        try {
+            this.readAccounts();
+        } catch (IOException e) {
+            System.out.println("Could not synchronize file system on accounts read.");
+        }
+
+        return new ArrayList<>(accountsToTransactions.keySet());
     }
 }
