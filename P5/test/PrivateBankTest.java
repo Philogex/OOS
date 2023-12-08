@@ -15,8 +15,8 @@ class PrivateBankTest {
         assertDoesNotThrow(() -> privateBank = new PrivateBank("you_will_never_get_me", 0.5, 0.5, dir));
     }
 
-    @org.junit.jupiter.api.AfterAll
-    public static void cleanup() {
+    @org.junit.jupiter.api.AfterEach
+    public void cleanup() {
         File directory = new File(dir);
         if (directory.exists()) {
             File[] files = directory.listFiles();

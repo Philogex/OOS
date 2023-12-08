@@ -10,8 +10,8 @@ public class TransactionSerializerTest {
     static String dir = "./test_data";
     private PrivateBank privateBank;
 
-    @org.junit.jupiter.api.AfterAll
-    public static void cleanup() {
+    @org.junit.jupiter.api.AfterEach
+    public void cleanup() {
         File directory = new File(dir);
         if (directory.exists()) {
             File[] files = directory.listFiles();

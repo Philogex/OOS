@@ -167,7 +167,7 @@ public class PrivateBank implements Bank {
     public void createAccount(String p_account) throws AccountAlreadyExistsException {
         try {
             this.readAccounts();
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Could not synchronize file system on accounts read.");
         }
 
@@ -195,8 +195,8 @@ public class PrivateBank implements Bank {
     public void createAccount(String p_account, List<Transaction> p_transactions) throws AccountAlreadyExistsException, TransactionAlreadyExistException, TransactionAttributeException {
         try {
             readAccounts();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.out.println("Could not synchronize file system on accounts read.");
         }
 
         if (accountsToTransactions.containsKey(p_account)) {
@@ -372,17 +372,15 @@ public class PrivateBank implements Bank {
         Path fileDirectory = Paths.get(directoryName);
 
         try {
-            // Get all files in the directory
             List<Path> files = Files.walk(fileDirectory).filter(Files::isRegularFile).toList();
 
-            // Populate the map with file names as keys and empty lists as values
+            if(files.isEmpty()) return;
             for (Path file : files) {
                 String fileName = file.getFileName().toString();
                 accountsToTransactions.put(fileName.replaceAll("Konto (.+?)\\.json", "$1"), new ArrayList<>());
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            // Handle the exception as needed
+            System.out.println("File System and Process currently unsynchronized. This can be ignored most of the time.");
         }
 
         //iterate over account data
