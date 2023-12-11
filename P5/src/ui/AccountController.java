@@ -23,35 +23,82 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * controller for account view
+ */
 public class AccountController implements Initializable {
+    /**
+     * text block
+     */
     @FXML
     public Text text;
+    /**
+     * add transaction options button
+     */
     @FXML
     public MenuButton options;
+    /**
+     * return to main view button
+     */
     @FXML
     public Button back;
+    /**
+     * add transaction button
+     */
     @FXML
     public MenuButton add;
+    /**
+     * root block
+     */
     @FXML
     public Parent root;
+    /**
+     * display ascending
+     */
     @FXML
     public MenuItem ascending;
+    /**
+     * display descending
+     */
     @FXML
     public MenuItem descending;
+    /**
+     * display positive
+     */
     @FXML
     public MenuItem positive;
+    /**
+     * display negative
+     */
     @FXML
     public MenuItem negative;
+    /**
+     * text for account name
+     */
     @FXML
     public Text accountName;
+    /**
+     * transaction list
+     */
     @FXML
     public ListView<Transaction> transactionListView;
-    private final ObservableList<Transaction> transactionsList= FXCollections.observableArrayList();
+    /**
+     * tracks changes
+     */
+    private final ObservableList<Transaction> transactionsList = FXCollections.observableArrayList();
+    /**
+     * payment display case
+     */
     @FXML
     public MenuItem payment;
+    /**
+     * transfer display case
+     */
     @FXML
     public MenuItem transfer;
-
+    /**
+     * private bank instance
+     */
     private PrivateBank privateBank;
     /**
      * Called to initialize a controller after its root element has been
@@ -64,6 +111,7 @@ public class AccountController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // back button logic
         back.setOnMouseClicked(mouseEvent ->{
             try {
                 root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/mainView.fxml")));
@@ -78,30 +126,36 @@ public class AccountController implements Initializable {
         });
     }
 
+    /**
+     * set up logic for ui
+     * @param privateBank private bank instance
+     * @param name name of bank
+     */
     public void setUp(PrivateBank privateBank, String name){
-        //Init
+        // init
         this.privateBank=privateBank;
         accountName.setText(name+" ["+privateBank.getAccountBalance(name)+"€]");
         update(privateBank.getTransactions(name));
 
         ContextMenu contextMenu= new ContextMenu();
-        //Löschen button
+        // delete button
         MenuItem delete = new MenuItem("Transaktion löschen");
         contextMenu.getItems().addAll(delete);
         transactionListView.setContextMenu(contextMenu);
-        // Multi Threading
-        AtomicReference<Transaction> selected= new AtomicReference<>();
+        // multi threading
+        AtomicReference<Transaction> selected = new AtomicReference<>();
+        // menu item selected
         transactionListView.setOnMouseClicked(mouseEvent-> {
             selected.set(transactionListView.getSelectionModel().getSelectedItem());
         });
 
-        //löschen funktion
+        // delete button logic
         delete.setOnAction(event -> {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setTitle("Transasktion Löschen");
-            confirm.setContentText("You sure about that?");
+            confirm.setContentText("Sind Sie sich sicher?");
             Optional<ButtonType> result = confirm.showAndWait();
-            if(result.isPresent()&& result.get()==ButtonType.OK){
+            if(result.isPresent()&& result.get() == ButtonType.OK){
                 try {
                     privateBank.removeTransaction(name,selected.get());
                 } catch (AccountDoesNotExistException | TransactionDoesNotExistException e) {
@@ -113,29 +167,45 @@ public class AccountController implements Initializable {
             }
         });
 
-        // Sortierung ascending
+        // sort asc
         ascending.setOnAction(event -> update(privateBank.getTransactionsSorted(name,true)));
 
-        //Sortierung descending
+        // sort desc
         descending.setOnAction(event -> update(privateBank.getTransactionsSorted(name,false)));
 
-        //Sortierung positive
+        // sort positive
         positive.setOnAction(event -> update(privateBank.getTransactionsByType(name,true)));
-        //Sortierung negative
+
+        // sort negative
         negative.setOnAction(event -> update(privateBank.getTransactionsByType(name,false)));
 
+        // add payment
         payment.setOnAction(event -> setTransaction(payment,name));
+
+        // add transfer
         transfer.setOnAction(event -> setTransaction(transfer,name));
     }
+
+    /**
+     * updates visible transaction list
+     * @param transactionList new transaction list
+     */
     private void update(List<Transaction> transactionList){
         transactionsList.clear();
         transactionsList.addAll(transactionList);
         transactionListView.setItems(transactionsList);
     }
+
+    /**
+     * adds transaction
+     * @param menuItem type of transaction
+     * @param name name of transaction
+     */
     private void setTransaction(MenuItem menuItem, String name){
         Dialog<Transaction> dialog = new Dialog<>();
         GridPane gridPane = new GridPane();
 
+        // ui input setup
         Label date = new Label("Datum: ");
         Label amount = new Label("Betrag: ");
         Label description = new Label("Beschreibung: ");
@@ -159,14 +229,19 @@ public class AccountController implements Initializable {
         gridPane.add(outgoingInterest_recipient, 1, 5);
         gridPane.add(outgoingInterest_recipientText, 2, 5);
 
+        // submit button setup
         ButtonType okButton = new ButtonType("Hinzufügen", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().setContent(gridPane);
         dialog.setResizable(true);
         dialog.getDialogPane().getButtonTypes().add(okButton);
 
-        Alert invalid = new Alert(Alert.AlertType.ERROR);
+        // show dialog
         dialog.show();
-        //Payment fall
+
+        // error alert
+        Alert invalid = new Alert(Alert.AlertType.ERROR);
+
+        // payment case
         if(Objects.equals(menuItem.getId(),"payment")){
             dialog.setTitle("Payment");
             incomingInterest_sender.setText("Incoming interest: ");
@@ -180,7 +255,7 @@ public class AccountController implements Initializable {
                             Objects.equals(outgoingInterest_recipientText.getText(), "")){
                         invalid.setContentText("Ungültige Werte");
                         Optional<ButtonType> optional = invalid.showAndWait();
-                        if(optional.isPresent()&&optional.get()==ButtonType.OK){
+                        if(optional.isPresent() && optional.get() == ButtonType.OK){
                             text.setText("Es wurde nichts gemacht");
                         }
                     } else {
@@ -194,21 +269,20 @@ public class AccountController implements Initializable {
                         } catch (TransactionAttributeException e) {
                             throw new RuntimeException(e);
                         }
-
                         try {
                             privateBank.addTransaction(name,payment);
                             text.setText("Neues Payment hinzugefügt");
                         } catch (TransactionAlreadyExistException | AccountDoesNotExistException | TransactionAttributeException e) {
                             throw new RuntimeException(e);
                         }
-
                         update(privateBank.getTransactions(name));
                         accountName.setText(name + " ["+privateBank.getAccountBalance(name)+" €]");
                     }
                 }
                 return null;
             });
-        } else if(Objects.equals(menuItem.getId(),"transfer")){ // Transfer
+        // transfer case
+        } else if(Objects.equals(menuItem.getId(),"transfer")){
             incomingInterest_sender.setText("Sender: ");
             outgoingInterest_recipient.setText("Empfänger: ");
 
@@ -226,7 +300,8 @@ public class AccountController implements Initializable {
                             text.setText("Es wurde nicht gemacht");
                         }
                     } else {
-                        if(outgoingInterest_recipientText.getText().equals(name)){ // Incoming Transfer
+                        // incoming transfer case
+                        if(outgoingInterest_recipientText.getText().equals(name)){
                             dialog.setTitle("Incomingtransfer");
                             IncomingTransfer incomingTransfer = null;
                             try {
@@ -247,7 +322,8 @@ public class AccountController implements Initializable {
                             update(privateBank.getTransactions(name));
                             accountName.setText(name + " [" + privateBank.getAccountBalance(name) + "€]");
                         }
-                        else if (incomingInterest_senderText.getText().equals(name)) {// Outgoing Transfer
+                        // outgoing transfer case
+                        else if (incomingInterest_senderText.getText().equals(name)) {
                             dialog.setTitle("Outgoingtransfer");
                             OutgoingTransfer outgoingTransfer = null;
                             try {

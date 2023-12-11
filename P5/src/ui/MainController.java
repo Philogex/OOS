@@ -21,44 +21,87 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+/**
+ * controller for main view
+ */
 public class MainController implements Initializable {
+    /**
+     * text block
+     */
     @FXML
     private Text statusText;
+    /**
+     * add account button
+     */
     @FXML
     private Button addAccountButton;
+    /**
+     * list of accounts
+     */
     @FXML
     private ListView<String> accountListView;
-    private final PrivateBank privateBank = new PrivateBank("Privatebank", 0.2,0.4,"Privatebank");
+    /**
+     * private bank instance
+     */
+    private final PrivateBank privateBank = new PrivateBank("Privatebank", 0.4,0.6,"Privatebank");
+    /**
+     * tracks changes to accountListView
+     */
     private final ObservableList<String> accountList = FXCollections.observableArrayList();
-    private Stage stage;
+    /**
+     * root object
+     */
     public Parent root;
+    /**
+     * main stage
+     */
+    private Stage stage;
+    /**
+     * main scene
+     */
     private Scene scene;
 
-    public MainController() throws TransactionAttributeException {
-    }
+    /**
+     * explicitly create constructor bc of throws
+     * @throws TransactionAttributeException throwable error
+     */
+    public MainController() throws TransactionAttributeException {}
 
+    /**
+     * updates account list
+     */
     public void uptdateList(){
         accountList.clear();
         accountList.addAll(privateBank.getAllAccounts());
         accountListView.setItems(accountList);
     }
 
+    /**
+     * Init function
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  {@code null} if the location is not known.
+     * @param resources The resources used to localize the root object, or {@code null} if
+     *                  the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //init
+        // init menu items and visuals
         uptdateList();
         ContextMenu contextMenu= new ContextMenu();
         MenuItem viewAccount = new MenuItem("Account anzeigen");
         MenuItem deleteAccount = new MenuItem("Account löschen");
-        contextMenu.getItems().addAll(viewAccount,deleteAccount);
+        contextMenu.getItems().addAll(viewAccount, deleteAccount);
         accountListView.setContextMenu(contextMenu);
         AtomicReference<String> selectedAccount= new AtomicReference<>();
 
+        // select account
         accountListView.setOnMouseClicked(event -> {
             selectedAccount.set(String.valueOf(accountListView.getSelectionModel().getSelectedItems()));
         });
 
-        //löschen funktion
+        // delete function
         deleteAccount.setOnAction(event -> {
             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
             confirm.setTitle("löschen");
@@ -74,6 +117,8 @@ public class MainController implements Initializable {
                 uptdateList();
             }
         });
+
+        // view account function
         viewAccount.setOnAction(event -> {
             stage = (Stage) root.getScene().getWindow();
             try {
@@ -82,8 +127,7 @@ public class MainController implements Initializable {
                 AccountController accountController = loader.getController();
                 accountController.setUp(privateBank,selectedAccount.toString().replace("[", "").replace("]",""));
             } catch (IOException e) {
-                e.printStackTrace();
-                //throw new RuntimeException(e);
+                throw new RuntimeException(e);
             }
             scene = new Scene(root);
             stage.setTitle("Privatebank");
@@ -91,7 +135,7 @@ public class MainController implements Initializable {
             stage.show();
         });
 
-        //add account button
+        // add account button
         addAccountButton.setOnMouseClicked(event -> {
             statusText.setText("");
             Dialog<String> dialog = new Dialog<>();

@@ -6,9 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.Objects;
-
+/**
+ * Entry point for bank application
+ */
 public class FxApplication extends Application{
     /**
      * The main entry point for all JavaFX applications.
@@ -25,10 +25,8 @@ public class FxApplication extends Application{
      *                     primary stages.
      * @throws Exception if something goes wrong
      */
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainView.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
@@ -37,6 +35,10 @@ public class FxApplication extends Application{
         primaryStage.show();
     }
 
+    /**
+     * main function
+     * @param args
+     */
     public static void main(String[] args){
         launch(args);
     }
